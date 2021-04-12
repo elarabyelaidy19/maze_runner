@@ -1,0 +1,4 @@
+module MazeClasses 
+
+  class Maze 
+    
