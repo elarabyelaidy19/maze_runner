@@ -51,11 +51,11 @@ module MazeClasses
     end 
 
     def find_start 
-      find_char("S") 
+      find_char("A") 
     end 
 
     def find_end
-      find_char("E") 
+      find_char("X") 
     end 
 
     def find_neighbors(point) 
