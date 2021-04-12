@@ -4,7 +4,6 @@ module MazeClasses
     DELTAS = [[1, 0], [0, 1], [-1, 0], [0, -1]] 
 
     attr_reader :start_inedx, :end_inedx 
-
     def initialize(filename) 
       @map = load_map(filename) 
       @title = parse_title(filename) 
@@ -87,8 +86,7 @@ module MazeClasses
       end 
       show_path(copy_map) 
     end  
-
-    end 
+ 
 
     def show_path(map) 
       map.each do |line|
@@ -109,6 +107,7 @@ module MazeClasses
         new_arr 
       end 
     end 
+
   end 
 
   class Maze_Solver 
@@ -179,19 +178,31 @@ module MazeClasses
       path 
      end 
 
-     def solve(heuristic = :manhattan_heuristic) 
+    def solve(heuristic = :manhattan_heuristic) 
       build_branching_paths(heuristic)
       path = find_path 
       @maze.travel_path(path) 
-     end 
+    end 
 
     private 
 
     def reset_values 
       @branching_paths = {} 
       @current = @maze.find_start
-    end 
-  end 
+    end  
+  end
+end 
+
+
+
+if __FILE__ == $PROGRAM_NAME
+  filename = ARGV[0] || "maze1.txt"
+  test_maze = MazeClasses::Maze.new(filename) 
+  puts test_maze 
+  puts "Start is at #{test_maze.start_inedx}"
+  puts "Ens is at #{test_maze.end_inedx}" 
+  test_solver = MazeClasses::Maze_Solver.new(test_maze)
+  test_solver.solve
 end 
  
  
