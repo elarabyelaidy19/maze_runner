@@ -111,6 +111,47 @@ module MazeClasses
     end 
   end 
 
+  class Maze_Solver 
+
+    def initialize(maze) 
+      @maze = maze 
+    end 
+
+    # find the overall distance from start to end 
+    def find_distance(point) 
+      p_x, p_y = point 
+      final_x, final_y = @maze.find_end
+      ((p_x - final_x) + (p_y - final_y)).abs
+    end 
+
+    def find_manhattan_estimate(point) 
+      dist_to_end = find_distance(point) 
+      dist_traveled = find_path(point).length
+      f = dist_to_end + dist_traveled 
+    end 
+
+    
+
+    def find_path(goal = @maze.find_end) 
+      path = [goal]
+      spot = goal 
+      until @branching_paths[spot] == nil 
+        path << @branching_paths[spot] 
+        spot = @branching_paths[spot]
+      end
+      path 
+     end 
+
+    private 
+    def reset_values 
+      @branching_paths = {} 
+      @current = @maze.find_start
+    end 
+ 
+ 
+
+ 
+
 
 
 
