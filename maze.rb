@@ -8,7 +8,8 @@ module MazeClasses
     def initialize(filename) 
       @map = load_map(filename) 
       @title = parse_title(filename) 
-
+      @start_inedx = find_start 
+      @end_inedx = find_end 
     end 
 
     def load_map(filename) 
@@ -57,7 +58,18 @@ module MazeClasses
     def find_end
       find_char("E") 
     end 
-    
+
+    def find_neighbors(point) 
+      p_x, p_y = point 
+      neighbors = [] 
+      DELTAS.each do |d_x, d_y| 
+        neighbor = [(d_x + p_x), (d_y + p_y)] 
+        if in_maze?(neighbor) && !is_wall?(neighbor) 
+          neighbors << neighbor 
+        end 
+      end 
+      neighbors 
+    end 
 
 
 
