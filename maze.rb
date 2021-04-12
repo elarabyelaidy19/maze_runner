@@ -195,6 +195,7 @@ end
 
 
 
+
 if __FILE__ == $PROGRAM_NAME
   filename = ARGV[0] || "maze1.txt"
   test_maze = MazeClasses::Maze.new(filename) 
