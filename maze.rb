@@ -115,6 +115,7 @@ module MazeClasses
 
     def initialize(maze) 
       @maze = maze 
+      reset_values
     end 
 
     # find the overall distance from start to end 
@@ -130,7 +131,43 @@ module MazeClasses
       f = dist_to_end + dist_traveled 
     end 
 
-    
+    # estimates dist. traveled and dist. to end,
+    # picks point that should have minimum sum.
+    # does not take diagonal moves into consideration.
+    def manhattan_heuristic(queue) 
+      queue.inject do |chosen_point, point|
+        old_f = find_manhattan_estimate(chosen_point) 
+        new_f = find_manhattan_estimate(point) 
+        old_f > new_f ? point : chosen_point
+      end 
+    end 
+
+    def b_f_s(queue) 
+      queue.shift
+    end 
+
+    def build_branching_paths(heuristic = :manhattan_heuristic) 
+      reset_values 
+      queue = [@current] 
+      visited = [@current] 
+
+      until queue.empty? || @current == @maze.find_end
+        @current = self.send(heuristic, queue) 
+        queue.delete(@current) 
+        visited << @current 
+        #find open spaces nearby
+        nearby_openings = @maze.find_neighbors(@current) 
+         #add them to queue
+        nearby_openings.each do |neighbor| 
+          unless visited.include?(neighbor) || queue.include?(neighbor) 
+            queue << neighbor 
+            @branching_paths[neighbor] = @current 
+          end 
+        end 
+      end
+
+      @branching_paths
+    end
 
     def find_path(goal = @maze.find_end) 
       path = [goal]
@@ -142,11 +179,20 @@ module MazeClasses
       path 
      end 
 
+     def solve(heuristic = :manhattan_heuristic) 
+      build_branching_paths(heuristic)
+      path = find_path 
+      @maze.travel_path(path) 
+     end 
+
     private 
+
     def reset_values 
       @branching_paths = {} 
       @current = @maze.find_start
     end 
+  end 
+end 
  
  
 
